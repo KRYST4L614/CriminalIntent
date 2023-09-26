@@ -158,8 +158,8 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
 
             requestCode == REQUEST_CONTACT && data != null -> {
                 val contactUri: Uri? = data.data
-                val suspectName = getNameFromContactUri(contactUri)
-                val suspectNumber = getPhoneNumberFromContactUri(contactUri)
+                val suspectName = getFromContactUri(contactUri, arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val suspectNumber = getFromContactUri(contactUri, arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 suspectName?.let {
                     crime.suspect = it
                 }
@@ -171,29 +171,14 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
         }
     }
 
-    private fun getPhoneNumberFromContactUri(contactUri: Uri?): String? {
-        val queryFields = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+    private fun getFromContactUri(contactUri: Uri?, queryFields: Array<String>): String? {
         contactUri?.let{uri ->
+            // Выполняемый здесь запрос — contactUri похож на предложение "where"
             val cursor = requireActivity().contentResolver.query(uri, queryFields, null, null, null)
             cursor?.use { cur ->
                 if (cur.moveToFirst()) {
-                    val columnIndex = cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    val columnIndex = cur.getColumnIndex(queryFields[0])
                     return cur.getString(columnIndex)
-                }
-            }
-        }
-        return null
-    }
-
-    private fun getNameFromContactUri(contactUri: Uri?): String? {
-        val queryFields = arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-        contactUri?.let {
-            val cursor = requireActivity().contentResolver
-                .query(it, queryFields, null, null)
-            cursor?.use {cur ->
-                if (cur.moveToFirst()) {
-                    val nameIndex = cur.getColumnIndex(queryFields[0])
-                    return cur.getString(nameIndex)
                 }
             }
         }
