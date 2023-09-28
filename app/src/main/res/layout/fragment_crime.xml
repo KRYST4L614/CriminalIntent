@@ -111,6 +111,8 @@
         android:layout_height="80dp"
         android:background="@android:drawable/ic_menu_gallery"
         android:scaleType="centerInside"
+        android:cropToPadding="true"
+        android:rotation="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

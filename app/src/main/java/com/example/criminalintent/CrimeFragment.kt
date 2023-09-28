@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -55,10 +56,11 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
     private lateinit var callButton: Button
     private lateinit var crimePhoto: ImageView
     private lateinit var crimeCamera: ImageButton
+    private var crimePhotoWidth = 0
+    private var crimePhotoHeight = 0
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProvider(this).get(CrimeDetailViewModel::class.java)
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         @Suppress("DEPRECATION") val crimeId = arguments?.getSerializable(ARG_CRIME_ID) as UUID
@@ -83,6 +85,11 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
         callButton = view.findViewById(R.id.call_suspect) as Button
         crimePhoto = view.findViewById(R.id.crime_photo) as ImageView
         crimeCamera = view.findViewById(R.id.crime_camera) as ImageButton
+        val observer = crimePhoto.viewTreeObserver
+        observer.addOnGlobalLayoutListener {
+            crimePhotoWidth = crimePhoto.width
+            crimePhotoHeight = crimePhoto.height
+        }
         return view
     }
 
@@ -202,7 +209,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
 
     private fun updatePhotoView() {
         if (photoFile.exists()) {
-            val bitmap = getScaledBitmap(photoFile.path, requireActivity())
+            val bitmap = getScaledBitmap(photoFile.path, crimePhotoWidth, crimePhotoHeight)
             crimePhoto.setImageBitmap(bitmap)
         } else {
             crimePhoto.setImageDrawable(null)
