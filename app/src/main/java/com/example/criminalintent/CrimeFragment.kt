@@ -32,6 +32,7 @@ private const val TAG = "CrimeFragment"
 private const val ARG_CRIME_ID = "crime_id"
 private const val DIALOG_DATE = "dialogDate"
 private const val DIALOG_TIME = "dialogTime"
+private const val DIALOG_PHOTO = "dialogPhoto"
 private const val REQUEST_DATE_PICKER = 0
 private const val REQUEST_TIME_PICKER = 1
 private const val DATE_FORMAT = "EEE, MMM d, yyy"
@@ -187,6 +188,14 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
                 }
                 var chooserIntent = Intent.createChooser(captureImage, "Camera")
                 startActivityForResult(chooserIntent, REQUEST_PHOTO)
+            }
+        }
+
+        crimePhoto.setOnClickListener {
+            if (photoFile.exists()) {
+                CrimePhotoDialog.newInstance(photoFile.path).apply {
+                    show(this@CrimeFragment.parentFragmentManager, DIALOG_PHOTO)
+                }
             }
         }
     }
