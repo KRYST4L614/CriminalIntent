@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/crime_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/crime_photo"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/enter_a_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/crime_photo"
         app:layout_constraintTop_toBottomOf="@+id/crime_title" />
 
     <EditText
@@ -31,10 +31,14 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/details_crime"
+        app:layout_constraintBottom_toTopOf="@+id/date_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crime_title_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/crime_camera" />
+
 
     <Button
         android:id="@+id/date_button"
@@ -43,6 +47,7 @@
         android:layout_marginTop="8dp"
         android:paddingVertical="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_crime_text_view"
         tools:text="Wednesday 9 September" />
@@ -54,10 +59,10 @@
         android:layout_marginTop="8dp"
         android:paddingVertical="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_button"
         tools:text="10:00 PM" />
-
 
     <CheckBox
         android:id="@+id/solved_check_box"
@@ -99,5 +104,23 @@
         app:layout_constraintBottom_toTopOf="@+id/crime_suspect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/crime_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@android:drawable/ic_menu_gallery"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/crime_camera"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crime_photo"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

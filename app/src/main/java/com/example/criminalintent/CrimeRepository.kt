@@ -7,6 +7,7 @@ import com.example.criminalintent.database.CrimeDAO
 import com.example.criminalintent.database.CrimeDatabase
 import com.example.criminalintent.database.migration_1_2
 import com.example.criminalintent.database.migration_2_3
+import java.io.File
 import java.util.UUID
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -24,6 +25,7 @@ class CrimeRepository private constructor(context: Context) {
     private val executor = Executors.newSingleThreadExecutor()
 
     private val dao: CrimeDAO = database.crimeDAO()
+    private val filesDir = context.applicationContext.filesDir
 
     fun getCrimes(): LiveData< List< Crime > > = dao.getCrimes()
 
@@ -39,6 +41,10 @@ class CrimeRepository private constructor(context: Context) {
         executor.execute {
             dao.addCrime(crime)
         }
+    }
+
+    fun getPhotoFile(crime: Crime): File {
+        return File(filesDir, crime.photoFileName)
     }
 
     companion object {

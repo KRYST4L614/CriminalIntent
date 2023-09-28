@@ -13,4 +13,7 @@ data class Crime(
     var isSolved: Boolean = false,
     var suspect: String = "",
     var telNumberOfSuspect: String = "",
-)
+) {
+    val photoFileName
+        get() = "IMAGE$id.jpg"
+}
