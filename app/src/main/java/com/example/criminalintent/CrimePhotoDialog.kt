@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+import kotlinx.coroutines.launch
 
 
 private const val PHOTO_PATH_ARG = "photo"
@@ -30,8 +32,10 @@ class CrimePhotoDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val path = arguments?.getString(PHOTO_PATH_ARG)
         path?.let {
-            val bitmap = getScaledBitmap(path, requireActivity())
-            crimePhoto.setImage(ImageSource.bitmap(bitmap))
+            lifecycleScope.launch {
+                val bitmap = getScaledBitmap(path, requireActivity())
+                crimePhoto.setImage(ImageSource.bitmap(bitmap))
+            }
         }
     }
 

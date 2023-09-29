@@ -21,8 +21,10 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -60,6 +62,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
     private lateinit var callButton: Button
     private lateinit var crimePhoto: ImageView
     private lateinit var crimeCamera: ImageButton
+    private lateinit var crimePhotoProgressBar: ProgressBar
     private var crimePhotoWidth = 0
     private var crimePhotoHeight = 0
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
@@ -89,6 +92,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
         callButton = view.findViewById(R.id.call_suspect) as Button
         crimePhoto = view.findViewById(R.id.crime_photo) as ImageView
         crimeCamera = view.findViewById(R.id.crime_camera) as ImageButton
+        crimePhotoProgressBar = view.findViewById(R.id.crime_progress_bar) as ProgressBar
         val observer = crimePhoto.viewTreeObserver
         observer.addOnGlobalLayoutListener {
             crimePhotoWidth = crimePhoto.width
@@ -214,7 +218,9 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
     private fun updatePhotoView() {
         viewLifecycleOwner.lifecycleScope.launch {
             if (photoFile.exists()) {
+                crimePhotoProgressBar.isVisible = true
                 val bitmap: Deferred<Bitmap> = async{getScaledBitmap(photoFile.path, crimePhotoWidth, crimePhotoHeight)}
+                crimePhotoProgressBar.isVisible = false
                 crimePhoto.setImageBitmap(bitmap.await())
             } else {
                 crimePhoto.setImageDrawable(null)
