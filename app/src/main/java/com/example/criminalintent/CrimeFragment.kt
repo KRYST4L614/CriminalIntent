@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
@@ -25,9 +26,12 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import java.io.File
 import java.util.Date
+import java.util.Locale
 import java.util.UUID
+import kotlinx.coroutines.*
 
 private const val TAG = "CrimeFragment"
 private const val ARG_CRIME_ID = "crime_id"
@@ -208,11 +212,13 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
     }
 
     private fun updatePhotoView() {
-        if (photoFile.exists()) {
-            val bitmap = getScaledBitmap(photoFile.path, crimePhotoWidth, crimePhotoHeight)
-            crimePhoto.setImageBitmap(bitmap)
-        } else {
-            crimePhoto.setImageDrawable(null)
+        viewLifecycleOwner.lifecycleScope.launch {
+            if (photoFile.exists()) {
+                val bitmap: Deferred<Bitmap> = async{getScaledBitmap(photoFile.path, crimePhotoWidth, crimePhotoHeight)}
+                crimePhoto.setImageBitmap(bitmap.await())
+            } else {
+                crimePhoto.setImageDrawable(null)
+            }
         }
     }
 
@@ -284,7 +290,8 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
 
     private fun updateUI(){
         crimeTitleTextView.text = crime.title
-        dateButton.text = DateFormat.format(DATE_FORMAT, crime.date)
+        val df = DateFormat.getBestDateTimePattern(Locale.getDefault(), DATE_FORMAT)
+        dateButton.text = DateFormat.format(df, crime.date)
         timeButton.text = DateFormat.format(TIME_FORMAT, crime.date)
         solvedCheckBox.isChecked = crime.isSolved
         if (crime.suspect.isNotBlank()) {

@@ -5,8 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
 import kotlin.math.max
+import kotlinx.coroutines.*
 
-fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
+suspend fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
     //Чтение размеров изображения на диске
     var options = BitmapFactory.Options().apply {
         inJustDecodeBounds = true
@@ -34,7 +35,7 @@ fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
     return BitmapFactory.decodeFile(path, options)
 }
 
-fun getScaledBitmap(path: String, activity: Activity): Bitmap {
+suspend fun getScaledBitmap(path: String, activity: Activity): Bitmap {
     val size = Point()
     activity.windowManager.defaultDisplay.getSize(size)
 
