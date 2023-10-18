@@ -17,4 +17,7 @@
     <string name="crime_report_subject">CriminalIntent Crime Report</string>
     <string name="send_report">Send crime report via</string>
     <string name="call_to_suspect">Call to suspect</string>
+    <string name="crime_photo_button_description" translatable="false">Take photo of crime scene</string>
+    <string name="crime_photo_no_image_description" translatable="false">Crime scene photo (not set)</string>
+    <string name="crime_photo_image_description" translatable="false">Crime scene photo (set)</string>
 </resources>

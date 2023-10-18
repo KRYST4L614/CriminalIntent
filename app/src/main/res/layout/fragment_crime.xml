@@ -114,7 +114,8 @@
         android:cropToPadding="true"
         android:rotation="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/crime_photo_no_image_description" />
 
     <ImageButton
         android:id="@+id/crime_camera"
@@ -123,7 +124,8 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crime_photo"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:contentDescription="@string/crime_photo_button_description" />
 
     <ProgressBar
         android:id="@+id/crime_progress_bar"

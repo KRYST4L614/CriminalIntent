@@ -218,12 +218,14 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragme
     private fun updatePhotoView() {
         viewLifecycleOwner.lifecycleScope.launch {
             if (photoFile.exists()) {
-                crimePhotoProgressBar.isVisible = true
                 val bitmap: Deferred<Bitmap> = async{getScaledBitmap(photoFile.path, crimePhotoWidth, crimePhotoHeight)}
-                crimePhotoProgressBar.isVisible = false
+                crimePhotoProgressBar.isVisible = true
+                crimePhoto.contentDescription = getString(R.string.crime_photo_image_description)
                 crimePhoto.setImageBitmap(bitmap.await())
+                crimePhotoProgressBar.isVisible = false
             } else {
                 crimePhoto.setImageDrawable(null)
+                crimePhoto.contentDescription = getString(R.string.crime_photo_no_image_description)
             }
         }
     }

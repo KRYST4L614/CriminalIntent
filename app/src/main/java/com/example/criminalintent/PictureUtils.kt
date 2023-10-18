@@ -30,7 +30,6 @@ suspend fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitm
     options = BitmapFactory.Options().apply {
         this.inSampleSize = inSampleSize
     }
-
     //Чтение и создание окончательного растрового изображения
     return BitmapFactory.decodeFile(path, options)
 }
